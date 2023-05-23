@@ -18,20 +18,15 @@ void makeArray(char **enVars)
 		exit(1);
 	}
 	string[_strlen(string) - 1] = '\0'; /* remove the newline*/
-	wordArray = getWordArray(string);   /* make array from string*/
+	wordArray = getWordArray(string, enVars);   /* make array from string*/
 	if (wordArray != NULL)
 	{
 		validPath = getPath(wordArray, enVars); /* Look for executable */
 		if (validPath)
 		{ /* if path is valid create a child process n execute it*/
 			pid = fork();
-			if (pid == -1)
-			{ /*fork process failed*/
+			if (pid == -1)/*fork process failed*/
 				perror("Fork() failed");
-				free(string);
-				free(validPath);
-				exit(1);
-			}
 			if (pid == 0)/*child process*/
 				execve(validPath, wordArray, enVars);
 			if (pid != 0)/* back to parent process */
@@ -48,16 +43,16 @@ void makeArray(char **enVars)
 		}
 	}
 }
-
 /**
  * getWordArray - makes array out of string passed
  * @string: string passed
+ * @enVars: pointer to environment array
  * Return: a pointer to the wordArray or null
  */
-char **getWordArray(char *string)
+char **getWordArray(char *string, char **enVars)
 {
 	char *word = NULL, **wordArray = NULL;
-	int isExit = 0;
+	int isExit = 0, isEnv = 0;
 	size_t wordCount = 0;
 
 	word = strtok(string, " ");
@@ -73,26 +68,26 @@ char **getWordArray(char *string)
 		free(string);
 		exit(0);
 	}
+	isEnv = myenv(word, enVars); /* check  env cmd n print enviros */
+	if (isEnv == 1)
+	{
+		free(string);
+		return (NULL);
+	}
 	while (word != NULL)
 	{
 		wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
 				(wordCount + 1) * sizeof(char *));
 		if (wordArray == NULL)
-		{
-			perror("Memory re allocation failed");
 			return (NULL);
-		}
 		wordArray[wordCount] = _strdup(word); /*append each word to the wordArray */
 		wordCount++;
 		word = strtok(NULL, " ");
 	}
-	wordArray = _realloc(wordArray, (wordCount * sizeof(char *)), (wordCount + 1)
-			* sizeof(char *)); /*add memory space for null terminator to word array*/
+	wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
+			(wordCount + 1) * sizeof(char *));
 	if (wordArray == NULL)
-	{
-		perror("Memory re allocation failed");
 		return (NULL);
-	}
 	wordArray[wordCount] = NULL;/* add null terminator*/
 	return (wordArray);
 }
