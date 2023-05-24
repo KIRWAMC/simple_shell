@@ -8,20 +8,39 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <errno.h>
+
+extern int errno;
+extern char **environ;
 
 /* Prototypes*/
-void makeArray(char **env);
-int myexit(char *word);
-char *getPath(char **wordArray, char **enVars);
 
-unsigned long int _strlen(char *s);
+/* makeArray.c */
+void makeArray(char **env, char **argv);
+char **getWordArray(char *string);
+
+/* getPath.c */
+char *getPath(char **wordArray, char **enVars, char **argv);
+char *extractPATH(char **enVars);
+
+/* realloc.c */
 void *_realloc(void *ptr, size_t oldSize, size_t size);
+
+/* string.c */
+unsigned long int _strlen(char *s);
 char *_strcat(char *dest, char *src);
 char *_strcpy(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, size_t n);
+
+/* moreString.c */
 char *_strdup(char *s);
 char *_strchr(char *s, int c);
-char **getWordArray(char *string);
+
+/* exit.c */
+int myexit(char *word);
+
+/* env.c */
+int myenv(char *word);
 
 #endif

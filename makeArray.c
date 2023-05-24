@@ -2,8 +2,9 @@
 /**
  * makeArray - read input makes calls getWordArray checks validPath
  * @enVars: environment variables
+ * @argv: arguments passed to the program
  */
-void makeArray(char **enVars)
+void makeArray(char **enVars, char **argv)
 {
 	char *string = NULL, **wordArray = NULL, *validPath = NULL;
 	int status;
@@ -15,27 +16,22 @@ void makeArray(char **enVars)
 	if (read == -1)
 	{
 		free(string);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	string[_strlen(string) - 1] = '\0'; /* remove the newline*/
 	wordArray = getWordArray(string);   /* make array from string*/
 	if (wordArray != NULL)
 	{
-		validPath = getPath(wordArray, enVars); /* Look for executable */
+		validPath = getPath(wordArray, enVars, argv); /* Look for executable */
 		if (validPath)
 		{ /* if path is valid create a child process n execute it*/
 			pid = fork();
-			if (pid == -1)
-			{ /*fork process failed*/
+			if (pid == -1)/*fork process failed*/
 				perror("Fork() failed");
-				free(string);
-				free(validPath);
-				exit(1);
-			}
 			if (pid == 0)/*child process*/
 				execve(validPath, wordArray, enVars);
 			if (pid != 0)/* back to parent process */
-				wait(&status); /* wait for child to finish*/
+				wait(&status);/* wait for child to finish*/
 			free(validPath); /* free validPath that ws returned from getPath()*/
 		}
 		if (string)
@@ -46,9 +42,10 @@ void makeArray(char **enVars)
 				free(wordArray[i]); /* free wordArray[i] allocated memory with _strdup() */
 			free(wordArray);/* free Word Array */
 		}
+
+				exit(status);
 	}
 }
-
 /**
  * getWordArray - makes array out of string passed
  * @string: string passed
@@ -57,7 +54,7 @@ void makeArray(char **enVars)
 char **getWordArray(char *string)
 {
 	char *word = NULL, **wordArray = NULL;
-	int isExit = 0;
+	int isExit = 0, isEnv = 0;
 	size_t wordCount = 0;
 
 	word = strtok(string, " ");
@@ -71,28 +68,28 @@ char **getWordArray(char *string)
 	if (isExit == 1)
 	{
 		free(string);
-		exit(0);
+		exit(EXIT_SUCCESS);
+	}
+	isEnv = myenv(word); /* check  env cmd n print enviros */
+	if (isEnv == 1)
+	{
+		free(string);
+		return (NULL);
 	}
 	while (word != NULL)
 	{
 		wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
 				(wordCount + 1) * sizeof(char *));
 		if (wordArray == NULL)
-		{
-			perror("Memory re allocation failed");
 			return (NULL);
-		}
 		wordArray[wordCount] = _strdup(word); /*append each word to the wordArray */
 		wordCount++;
 		word = strtok(NULL, " ");
 	}
-	wordArray = _realloc(wordArray, (wordCount * sizeof(char *)), (wordCount + 1)
-			* sizeof(char *)); /*add memory space for null terminator to word array*/
+	wordArray = _realloc(wordArray, (wordCount * sizeof(char *)),
+			(wordCount + 1) * sizeof(char *));
 	if (wordArray == NULL)
-	{
-		perror("Memory re allocation failed");
 		return (NULL);
-	}
 	wordArray[wordCount] = NULL;/* add null terminator*/
 	return (wordArray);
 }
