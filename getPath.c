@@ -15,7 +15,7 @@ char *getPath(char **wordArray, char **enVars, char **argv)
 		return (NULL);
 	allPath = extractPATH(enVars);/* call extractPATH*/
 	if (allPath == NULL)
-		exit(EXIT_SUCCESS);
+		exit(EXIT_FAILURE);
 	tempPath = _strdup(allPath); /* Make a copy of allPath n use the copy */
 	path = strtok(tempPath, ":");
 	while (path)
@@ -25,7 +25,7 @@ char *getPath(char **wordArray, char **enVars, char **argv)
 			pathNameSize = _strlen(path) + _strlen("/") + _strlen(wordArray[0]);
 			pathName = (char *)malloc(pathNameSize * sizeof(char *));
 			if (pathName == NULL)
-				exit(EXIT_SUCCESS);
+				exit(EXIT_FAILURE);
 			_strcpy(pathName, path);/*copy path to the pathname*/
 			_strcat(pathName, "/");	/* add / to pathname*/
 			_strcat(pathName, wordArray[0]); /* add the 1st argument to the path */
@@ -45,7 +45,7 @@ char *getPath(char **wordArray, char **enVars, char **argv)
 	} /*looping no valid path free tempPath allocated by _strdup()*/
 	free(tempPath);
 	write(STDOUT_FILENO, argv[0], _strlen(argv[0]));
-	write(STDOUT_FILENO, ": 1: ", 5);
+	write(STDOUT_FILENO, ": ", 2);
 	perror(wordArray[0]); /* print error*/
 	return (NULL);
 }

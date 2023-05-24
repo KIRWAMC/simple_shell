@@ -12,18 +12,15 @@ int main(int argc, char *argv[], char *envp[])
 {
 	while (1)
 	{
-		short prompt, space;
 
 		if (argc || argv || envp)
 		{
 			;
 		}
 
-		prompt = 36;
-		space = 32;
 		/* write $ on the screen */
-		write(STDOUT_FILENO, &prompt, 1);
-		write(STDOUT_FILENO, &space, 1);
+		/*write(STDOUT_FILENO, "$ ", 2);*/
+		/*printf("$ ");*/
 
 		/* read a line and create array */
 		makeArray(envp, argv);

@@ -8,12 +8,16 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <errno.h>
+
+extern int errno;
+extern char **environ;
 
 /* Prototypes*/
 
 /* makeArray.c */
 void makeArray(char **env, char **argv);
-char **getWordArray(char *string, char **enVars);
+char **getWordArray(char *string);
 
 /* getPath.c */
 char *getPath(char **wordArray, char **enVars, char **argv);
@@ -37,6 +41,6 @@ char *_strchr(char *s, int c);
 int myexit(char *word);
 
 /* env.c */
-int myenv(char *word, char **envVars);
+int myenv(char *word);
 
 #endif

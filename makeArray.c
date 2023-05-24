@@ -16,10 +16,10 @@ void makeArray(char **enVars, char **argv)
 	if (read == -1)
 	{
 		free(string);
-		exit(EXIT_SUCCESS);
+		exit(EXIT_FAILURE);
 	}
 	string[_strlen(string) - 1] = '\0'; /* remove the newline*/
-	wordArray = getWordArray(string, enVars);   /* make array from string*/
+	wordArray = getWordArray(string);   /* make array from string*/
 	if (wordArray != NULL)
 	{
 		validPath = getPath(wordArray, enVars, argv); /* Look for executable */
@@ -47,10 +47,9 @@ void makeArray(char **enVars, char **argv)
 /**
  * getWordArray - makes array out of string passed
  * @string: string passed
- * @enVars: pointer to environment array
  * Return: a pointer to the wordArray or null
  */
-char **getWordArray(char *string, char **enVars)
+char **getWordArray(char *string)
 {
 	char *word = NULL, **wordArray = NULL;
 	int isExit = 0, isEnv = 0;
@@ -69,7 +68,7 @@ char **getWordArray(char *string, char **enVars)
 		free(string);
 		exit(EXIT_SUCCESS);
 	}
-	isEnv = myenv(word, enVars); /* check  env cmd n print enviros */
+	isEnv = myenv(word); /* check  env cmd n print enviros */
 	if (isEnv == 1)
 	{
 		free(string);
