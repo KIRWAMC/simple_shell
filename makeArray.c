@@ -16,7 +16,7 @@ void makeArray(char **enVars, char **argv)
 	if (read == -1)
 	{
 		free(string);
-		exit(1);
+		exit(EXIT_SUCCESS);
 	}
 	string[_strlen(string) - 1] = '\0'; /* remove the newline*/
 	wordArray = getWordArray(string, enVars);   /* make array from string*/
@@ -67,7 +67,7 @@ char **getWordArray(char *string, char **enVars)
 	if (isExit == 1)
 	{
 		free(string);
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
 	isEnv = myenv(word, enVars); /* check  env cmd n print enviros */
 	if (isEnv == 1)
