@@ -18,9 +18,11 @@ int main(int argc, char *argv[], char *envp[])
 			;
 		}
 
-		/* write $ on the screen */
-		/*write(STDOUT_FILENO, "$ ", 2);*/
-		/*printf("$ ");*/
+		if (isatty(STDIN_FILENO))
+		{
+			/* write $ on the screen */
+			write(STDOUT_FILENO, "$ ", 2);
+		}
 
 		/* read a line and create array */
 		makeArray(envp, argv);

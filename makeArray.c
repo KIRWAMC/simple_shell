@@ -31,7 +31,7 @@ void makeArray(char **enVars, char **argv)
 			if (pid == 0)/*child process*/
 				execve(validPath, wordArray, enVars);
 			if (pid != 0)/* back to parent process */
-				wait(&status); /* wait for child to finish*/
+				wait(&status);/* wait for child to finish*/
 			free(validPath); /* free validPath that ws returned from getPath()*/
 		}
 		if (string)
@@ -42,6 +42,8 @@ void makeArray(char **enVars, char **argv)
 				free(wordArray[i]); /* free wordArray[i] allocated memory with _strdup() */
 			free(wordArray);/* free Word Array */
 		}
+
+				exit(status);
 	}
 }
 /**
