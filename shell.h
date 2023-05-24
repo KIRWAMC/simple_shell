@@ -12,11 +12,11 @@
 /* Prototypes*/
 
 /* makeArray.c */
-void makeArray(char **env);
+void makeArray(char **env, char **argv);
 char **getWordArray(char *string, char **enVars);
 
 /* getPath.c */
-char *getPath(char **wordArray, char **enVars);
+char *getPath(char **wordArray, char **enVars, char **argv);
 char *extractPATH(char **enVars);
 
 /* realloc.c */

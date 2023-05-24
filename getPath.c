@@ -3,9 +3,10 @@
  * getPath - gets PATH and looks for valid path to execute
  * @wordArray: Array of comands entered
  * @enVars: Array of enviros
+ * @argv: arguments passed to the program
  * Return: null or valid path to execute
  */
-char *getPath(char **wordArray, char **enVars)
+char *getPath(char **wordArray, char **enVars, char **argv)
 {
 	char *allPath = NULL, *tempPath = NULL, *path = NULL, *pathName = NULL;
 	int pathNameSize = 0;
@@ -43,6 +44,8 @@ char *getPath(char **wordArray, char **enVars)
 		}
 	} /*looping no valid path free tempPath allocated by _strdup()*/
 	free(tempPath);
+	write(STDOUT_FILENO, argv[0], _strlen(argv[0]));
+	write(STDOUT_FILENO, ": 1: ", 5);
 	perror(wordArray[0]); /* print error*/
 	return (NULL);
 }

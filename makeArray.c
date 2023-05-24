@@ -2,8 +2,9 @@
 /**
  * makeArray - read input makes calls getWordArray checks validPath
  * @enVars: environment variables
+ * @argv: arguments passed to the program
  */
-void makeArray(char **enVars)
+void makeArray(char **enVars, char **argv)
 {
 	char *string = NULL, **wordArray = NULL, *validPath = NULL;
 	int status;
@@ -21,7 +22,7 @@ void makeArray(char **enVars)
 	wordArray = getWordArray(string, enVars);   /* make array from string*/
 	if (wordArray != NULL)
 	{
-		validPath = getPath(wordArray, enVars); /* Look for executable */
+		validPath = getPath(wordArray, enVars, argv); /* Look for executable */
 		if (validPath)
 		{ /* if path is valid create a child process n execute it*/
 			pid = fork();

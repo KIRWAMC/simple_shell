@@ -26,7 +26,7 @@ int main(int argc, char *argv[], char *envp[])
 		write(STDOUT_FILENO, &space, 1);
 
 		/* read a line and create array */
-		makeArray(envp);
+		makeArray(envp, argv);
 	}
 	return (0);
 }
